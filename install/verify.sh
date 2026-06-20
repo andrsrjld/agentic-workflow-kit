@@ -48,7 +48,7 @@ command -v rtk   >/dev/null 2>&1 && pass "rtk present (token saver)" || warn "rt
 # --- Global rules (7 expected) -----------------------------------------------
 head "Global rules ($CLAUDE_HOME/rules/ecc/common)"
 RULES_DEST="$CLAUDE_HOME/rules/ecc/common"
-EXPECTED_RULES=(nervous-system memory-protocol self-learning graph-intelligence docs-source-of-truth testing routing)
+EXPECTED_RULES=(nervous-system memory-protocol self-learning graph-intelligence docs-source-of-truth testing-taxonomy agent-routing)
 if [ -d "$RULES_DEST" ]; then
   for r in "${EXPECTED_RULES[@]}"; do
     if [ -f "$RULES_DEST/$r.md" ]; then pass "rule $r.md"; else warn "rule $r.md missing (re-run install.sh Step 4)"; fi

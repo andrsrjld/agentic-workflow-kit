@@ -221,7 +221,7 @@ SNIPPET="$SCRIPT_DIR/claude/settings.snippet.json"
 if [ -f "$SNIPPET" ]; then
   node -e '
     const fs = require("fs");
-    const [, , settingsPath, snippetPath] = process.argv;
+    const [, settingsPath, snippetPath] = process.argv;  // node -e: args start at argv[1]
     const s = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
     const snip = JSON.parse(fs.readFileSync(snippetPath, "utf8"));
 
