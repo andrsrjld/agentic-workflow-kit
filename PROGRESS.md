@@ -28,11 +28,14 @@ Last updated: 2026-06-20 — by Claude (initial scaffold)
 - [x] `install/verify.sh` — doctor — read-only PASS/WARN table, exits 0 on warnings
 - [x] `docs/` — INSTALL, ADOPTION-GUIDE, ARCHITECTURE, DOCS-FORMAT, TESTING, TROUBLESHOOTING
 - [x] `examples/` — new-project-walkthrough.md
-- [~] Initial commit — NEXT
+- [x] Initial commit — decbeb4 (56 files, 5420 insertions)
 
 ## Phase 1 — Nervous system on WealthMe (after kit deploy)
 
-- [ ] Run `install/install.sh` → deploy rules/commands/hooks to `~/.claude` + runbooks/templates to `~/.agentic-workflows`
+- [!] Run `install/install.sh` → BLOCKED: auto-mode classifier denied (settings.json
+      merge + wildcard permission widening needs the USER's hand). HANDED TO USER:
+      run `! bash /home/stealth/WORK/vibes/agentic-workflow-kit/install/install.sh`
+      then `! bash .../install/verify.sh`. Everything below this line waits on it.
 - [ ] Verify deploy: 7 rules present, `/nerve` + `/agentic-init` available, hooks merged non-destructively (rtk + guardrail intact)
 - [ ] Wire `.claude/commands/{agentic-start,task-work,epic-loop}.md` → Step 0 RETRIEVE + final JUDGE/DISTILL/CONSOLIDATE
 - [ ] Rewrite `.claude/agents/epic-orchestrator.md` → discovery-first ECC/Ruflo routing
@@ -40,16 +43,23 @@ Last updated: 2026-06-20 — by Claude (initial scaffold)
 - [ ] Update `AGENTS.md` + `CLAUDE.md` → `/nerve` front door, model-agnostic note
 - [ ] Graphify cadence doc in `docs/AGENTIC-AGENT-LOOP.md`
 - [ ] Verify: warm-start hook no-ops cleanly; round-trip learning; discovery-first routing
+- NOTE: kit templates for the Phase-1 wiring already exist at
+  `agentic-workflow-kit/templates/claude/{commands,agents}/*.tmpl` — the WealthMe
+  edits are a manifest-fill of those. Do them after deploy so they reference live rules.
 
-## Phase 2 — Portability dogfood on WealthMe
+## Phase 2 — Portability dogfood on WealthMe  ✅ (branch `feat/agentic-manifest-dogfood`)
 
-- [ ] Write WealthMe `.agentic/config.yml` (real values)
-- [ ] Refactor `scripts/{test,qa,security-check,deploy-dev}.sh` → manifest-driven + auto-detect fallback
-- [ ] Refactor `.claude/hooks/guardrail.sh` → `AGENTIC_OVERRIDE` from manifest
-- [ ] Add WealthMe `docs/DEFINITION-OF-DONE.md` + `docs/product/ACCEPTANCE-CRITERIA.md`
-- [ ] Rewrite `docs/AGENTIC-NEW-PROJECT-SETUP.md` → cover existing + maintenance
-- [ ] Verify behavior-preserving: `qa.sh && test.sh && security-check.sh` pass identically; guardrail blocks force-push via `AGENTIC_OVERRIDE`
-- [ ] `.agentic/config.local.yml` gitignored
+- [x] Write WealthMe `.agentic/config.yml` (real values) — committed b9335eb
+- [x] Refactor `scripts/{test,qa,security-check,deploy-dev}.sh` → manifest-driven + auto-detect fallback
+- [x] Refactor `.claude/hooks/guardrail.sh` → `AGENTIC_OVERRIDE` from manifest (generic kit guardrail, +DELETE-without-WHERE)
+- [x] Add WealthMe `docs/DEFINITION-OF-DONE.md` + `docs/product/ACCEPTANCE-CRITERIA.md`
+- [ ] Rewrite `docs/AGENTIC-NEW-PROJECT-SETUP.md` → cover existing + maintenance (REMAINING — small doc edit)
+- [~] Verify behavior-preserving: security gate runs identically (fails only on PRE-EXISTING
+      multer advisory — same as before); guardrail blocks force-push via AGENTIC_OVERRIDE +
+      DELETE-without-WHERE, bypass/safe pass (tested). qa/test verified by resolved-command
+      equivalence (pnpm turbo run build|lint|test) — full double build skipped (cost), not a regression.
+- [x] `.agentic/config.local.yml` gitignored
+- [x] BONUS fix: `manifest_list` hardened for prettier multiline flow arrays (kit 2f0a4ca, WM 0ee1a22)
 
 ## Final validation (all phases)
 
