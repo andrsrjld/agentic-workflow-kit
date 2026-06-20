@@ -1,0 +1,76 @@
+# Implementation Progress — Agentic Workflow Kit
+
+> **Resumability anchor.** This file is the single source of truth for "where are we".
+> After a session/limit reset, a new session reads: this file + the plan
+> (`~/.claude/plans/lively-seeking-manatee.md`) + project memory, then continues from
+> the first unchecked item. Update this file as each item completes.
+
+**Status legend:** `[ ]` todo · `[~]` in progress · `[x]` done · `[!]` blocked
+
+Last updated: 2026-06-20 — by Claude (initial scaffold)
+
+---
+
+## Phase 3 — Distribution repo (authoring home, built first)
+
+- [x] Repo skeleton + git init (`/home/stealth/WORK/vibes/agentic-workflow-kit`)
+- [x] Anchor files: README.md, PROGRESS.md, LICENSE, .gitignore
+- [x] `rules/` — 7 global rules authored (agent-routing, docs-source-of-truth, graph-intelligence, memory-protocol, nervous-system, self-learning, testing-taxonomy)
+- [x] `claude/commands/` — nerve.md, agentic-init.md
+- [x] `claude/hooks/` — nerve-session-start.sh, nerve-capture.sh, nerve-consolidate.sh, guardrail.sh (generic) — bash -n clean; guardrail block logic + graceful no-op self-tested
+- [x] `claude/settings.snippet.json` — additive hook + permission merge snippet — valid JSON
+- [x] `templates/agentic/config.yml` — manifest schema template
+- [x] `templates/scripts/_agentic_lib.sh` — manifest reader lib (manifest_get/list, detect_*)
+- [x] `templates/docs/` — PRD,USER-STORIES,ACCEPTANCE-CRITERIA,ENGINEERING-TASKS,BACKLOG,DEFINITION-OF-DONE,epics/README,EPIC-template,EPIC-000-bootstrap,backlog.json (valid JSON)
+- [x] `templates/claude/` — CLAUDE/AGENTS/CONVENTIONS .tmpl + 6 agents/*.tmpl + 6 commands/*.tmpl (manifest-driven, tenant-aware, discovery-first)
+- [x] `agentic-workflows/` runbooks — nerve-runbook.md, bootstrap-new-project.md (ADOPTION-GUIDE.md lives under docs/, installer copies it to ~/.agentic-workflows)
+- [x] `install/install.sh` — idempotent installer
+- [x] `install/verify.sh` — doctor — read-only PASS/WARN table, exits 0 on warnings
+- [x] `docs/` — INSTALL, ADOPTION-GUIDE, ARCHITECTURE, DOCS-FORMAT, TESTING, TROUBLESHOOTING
+- [x] `examples/` — new-project-walkthrough.md
+- [~] Initial commit — NEXT
+
+## Phase 1 — Nervous system on WealthMe (after kit deploy)
+
+- [ ] Run `install/install.sh` → deploy rules/commands/hooks to `~/.claude` + runbooks/templates to `~/.agentic-workflows`
+- [ ] Verify deploy: 7 rules present, `/nerve` + `/agentic-init` available, hooks merged non-destructively (rtk + guardrail intact)
+- [ ] Wire `.claude/commands/{agentic-start,task-work,epic-loop}.md` → Step 0 RETRIEVE + final JUDGE/DISTILL/CONSOLIDATE
+- [ ] Rewrite `.claude/agents/epic-orchestrator.md` → discovery-first ECC/Ruflo routing
+- [ ] Update `.claude/agents/code-agent.md` (+ review-qa/security/test) → consume warm-start, emit learnings
+- [ ] Update `AGENTS.md` + `CLAUDE.md` → `/nerve` front door, model-agnostic note
+- [ ] Graphify cadence doc in `docs/AGENTIC-AGENT-LOOP.md`
+- [ ] Verify: warm-start hook no-ops cleanly; round-trip learning; discovery-first routing
+
+## Phase 2 — Portability dogfood on WealthMe
+
+- [ ] Write WealthMe `.agentic/config.yml` (real values)
+- [ ] Refactor `scripts/{test,qa,security-check,deploy-dev}.sh` → manifest-driven + auto-detect fallback
+- [ ] Refactor `.claude/hooks/guardrail.sh` → `AGENTIC_OVERRIDE` from manifest
+- [ ] Add WealthMe `docs/DEFINITION-OF-DONE.md` + `docs/product/ACCEPTANCE-CRITERIA.md`
+- [ ] Rewrite `docs/AGENTIC-NEW-PROJECT-SETUP.md` → cover existing + maintenance
+- [ ] Verify behavior-preserving: `qa.sh && test.sh && security-check.sh` pass identically; guardrail blocks force-push via `AGENTIC_OVERRIDE`
+- [ ] `.agentic/config.local.yml` gitignored
+
+## Final validation (all phases)
+
+- [ ] `/agentic-init new` on a throwaway empty repo → full scaffold → `/nerve "<task>"` runs
+- [ ] `/agentic-init existing` on a copy of a non-agentic repo → only additive diff
+- [ ] `install.sh` from clean clone → `verify.sh` all green
+- [ ] Update plan + memory with final state
+
+---
+
+## Decisions locked (from planning)
+- Centralized brain: new `/nerve`; bootstrap: new `/agentic-init` (modes new|existing|maintenance)
+- Engine: CLI/MCP (`npx ruflo`, `npx @claude-flow/cli`, `mcp__claude-flow__*`); thin Claude/Codex frontends
+- Auto-memory: hybrid (Claude hooks + portable CLI step); graceful no-op when absent
+- Params: per-project `.agentic/config.yml` manifest; machine overrides in `.agentic/config.local.yml`
+- WealthMe dogfoods the kit (one source of truth, no drift)
+- Docs: per-project `/docs` in shared standard format (PRD·Stories·AC·Epics·Tasks·Backlog·DoD)
+- Source-of-truth inversion: kit repo is canonical; `install.sh` deploys to `~/.claude` + `~/.agentic-workflows`
+
+## Self-learning loop → engine mapping (reference)
+- retrieve → `agentdb_pattern-search`/`semantic-route`/`hierarchical-recall` · `npx ruflo memory search`
+- judge → `agentdb_feedback` / `hooks_intelligence_trajectory-end` · gate verdicts as labels
+- distill → `agentdb_context-synthesize` · `npx ruflo memory store`
+- consolidate → `agentdb_consolidate`/`hierarchical-store` · `npx @claude-flow/cli memory store --namespace patterns`

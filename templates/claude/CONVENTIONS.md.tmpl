@@ -1,0 +1,55 @@
+# {{manifest.project.name}} — Conventions
+
+This file is the stable convention entry point referenced by both `CLAUDE.md` and `AGENTS.md`. All
+values are sourced from `.agentic/config.yml` so the conventions stay in sync with the manifest.
+
+## Global Guardrails
+
+- Never hardcode secrets. Use environment variables and `.env.example`.
+- Never deploy production from autonomous loops. DEV-only automation uses
+  `{{manifest.deploy.dev_command}}`.
+- Never force-push or run destructive database commands from an agent loop.
+- Keep changes scoped to the task. Avoid unrelated refactors.
+
+## Protected / Foundation Paths
+
+Shared/foundation files are protected unless the task explicitly requires a reviewed foundation change:
+
+`{{manifest.protected_paths}}`
+
+Agents (especially `code-agent`) must read but not modify these without an explicit reviewed task.
+
+## Project Conventions
+
+- **Page pattern:** `{{manifest.conventions.page_pattern}}` — new pages/routes follow this shape.
+- **Shared types:** `{{manifest.conventions.shared_types}}` — import shared contracts/types from here;
+  do not redeclare them locally.
+- **Workspaces:** `{{manifest.monorepo.workspaces}}` (tool: `{{manifest.monorepo.tool}}`).
+- **Package manager:** `{{manifest.package_manager}}`.
+- **Notes:** {{manifest.conventions.notes}}
+- Reuse existing utilities/components before creating local replacements.
+
+## Tenant Scoping
+
+`tenant.scope_fields` = `{{manifest.tenant.scope_fields}}`.
+
+- When **non-empty**, every data-access path / API handler must be scoped by these fields; the review
+  and security gates enforce it.
+- When **empty (`[]`)**, this project is single-tenant / non-SaaS and tenant checks are **skipped**
+  entirely.
+
+## Branches
+
+- **Integration branch** (PRs target this): `{{manifest.branches.integration}}`.
+- **Primary branch** (production-tracking): `{{manifest.branches.primary}}`.
+
+## Gates
+
+| Gate | Script |
+| ---- | ------ |
+| QA (lint + static) | `{{manifest.gates.qa}}` |
+| Test (build + tests) | `{{manifest.gates.test}}` |
+| Security | `{{manifest.gates.security}}` |
+
+Every task clears the project Definition of Done (`{{manifest.docs.definition_of_done}}`) before it is
+considered done.

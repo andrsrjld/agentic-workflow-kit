@@ -1,0 +1,79 @@
+# .agentic/config.yml — per-project Agentic Workflow Kit manifest
+# ---------------------------------------------------------------------------
+# Single source of truth for everything that used to be hardcoded in scripts,
+# hooks, agents, and commands. Generic kit tooling READS this file (with
+# auto-detect fallbacks) so the same scripts work in every repo.
+#
+# This file is GIT-TRACKED. Machine-specific overrides go in
+# `.agentic/config.local.yml` (gitignored) and are deep-merged on top.
+#
+# `/agentic-init` generates this for you by auto-detecting the project; review
+# and commit it. Any field left blank falls back to auto-detection at runtime.
+# ---------------------------------------------------------------------------
+
+project:
+  name: my-project                 # short slug; used as the memory namespace root
+  repo: ""                          # owner/name — auto-detected from `git remote get-url origin`
+  type: single-app                  # single-app | monorepo
+
+# Package manager — auto: read packageManager field / detect lockfile
+# (pnpm-lock.yaml->pnpm, yarn.lock->yarn, bun.lockb->bun, package-lock.json->npm)
+package_manager: ""                 # "" = auto-detect | pnpm | npm | yarn | bun
+
+# Monorepo settings (ignored when project.type = single-app)
+monorepo:
+  tool: ""                          # "" = auto (turbo.json->turbo, nx.json->nx, lerna.json->lerna) | turbo | nx | lerna | none
+  workspaces: []                    # e.g. [apps/*, packages/*]; "" = read from package.json workspaces / pnpm-workspace.yaml
+
+# Branch model — auto-detected from `git symbolic-ref` / remote HEAD when blank
+branches:
+  integration: ""                   # PRs target this (e.g. develop / development / main); "" = auto
+  primary: ""                       # production-tracking branch (e.g. main / master); "" = auto
+
+# Local DEV deploy (never production). Used by the deploy gate + smoke test.
+deploy:
+  dev_command: ""                   # e.g. scripts/deploy-dev.sh or "docker compose up -d --build --wait"; "" disables deploy gate
+  health_url: ""                    # smoke check, e.g. http://localhost:4000/health; "" skips health smoke
+  smoke_user: ""                    # seeded login used by smoke E2E, e.g. demo@example.com
+
+# Foundation files agents must NOT modify without an explicit reviewed task.
+protected_paths: []                 # globs, e.g. [src/styles/globals.css, src/lib/*, src/components/ui/*]
+
+# Project conventions surfaced to code/review agents.
+conventions:
+  page_pattern: ""                  # e.g. "src/app/(app)/[page-id]/page.tsx"; "" = none
+  shared_types: ""                  # e.g. "@myproject/contracts"; "" = none
+  notes: ""                         # any one-line convention reminder for agents
+
+# Multi-tenant scoping. EMPTY list disables all tenant checks for
+# single-tenant / non-SaaS projects (review + security agents skip them).
+tenant:
+  scope_fields: []                  # e.g. [userId, tenantId, familyGroupId]
+
+# Guardrail hook config.
+guardrail:
+  override_env: AGENTIC_OVERRIDE    # env var that, when =1, bypasses a guardrail block for a reviewed exception
+
+# Gate scripts (relative to repo root). The kit ships generic versions.
+gates:
+  qa: scripts/qa.sh                 # lint + static checks
+  test: scripts/test.sh             # install + build/type-check + unit tests
+  security: scripts/security-check.sh  # secrets, env files, destructive SQL, dep audit
+
+# Self-learning memory.
+memory:
+  enabled: true                     # false = pure no-op (no AgentDB/Ruflo calls anywhere)
+  namespace: ""                     # "" = use project.name; memory keys are <namespace>[:<branch>][:<epic>]
+  warm_start: true                  # SessionStart hook injects top-K relevant memory
+  top_k: 8                          # how many patterns to recall on warm start
+
+# Docs source-of-truth locations (standard set). Kept relative to repo root.
+docs:
+  root: docs
+  prd: docs/product/PRD.md
+  stories: docs/product/USER-STORIES.md
+  acceptance: docs/product/ACCEPTANCE-CRITERIA.md
+  tasks: docs/product/ENGINEERING-TASKS.md
+  backlog: docs/BACKLOG.md
+  epics: docs/epics
+  definition_of_done: docs/DEFINITION-OF-DONE.md

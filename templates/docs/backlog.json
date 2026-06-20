@@ -1,0 +1,33 @@
+{
+  "project": "{{PROJECT_NAME}} Roadmap",
+  "repo": "{{OWNER}}/{{REPO}}",
+  "fields": {
+    "Status": ["Backlog", "Todo", "In Progress", "In Review", "Done"],
+    "Area": ["Frontend", "Backend", "Infra"],
+    "Priority": ["P0", "P1", "P2"]
+  },
+  "milestones": [
+    { "phase": 0, "title": "Phase 0 — {{EPIC_NAME}}" },
+    { "phase": 1, "title": "Phase 1 — {{EPIC_NAME}}" }
+  ],
+  "epics": [
+    {
+      "key": "E0",
+      "title": "{{EPIC_NAME}}",
+      "phase": 0,
+      "issues": [
+        { "title": "{{BACKLOG_ITEM}}", "area": "Infra", "priority": "P0", "body": "{{ONE_LINE_DESCRIPTION}}" },
+        { "title": "{{BACKLOG_ITEM}}", "area": "Infra", "priority": "P1", "body": "{{ONE_LINE_DESCRIPTION}}" }
+      ]
+    },
+    {
+      "key": "E1",
+      "title": "{{EPIC_NAME}}",
+      "phase": 1,
+      "issues": [
+        { "title": "{{BACKLOG_ITEM}}", "area": "Backend", "priority": "P0", "body": "{{ONE_LINE_DESCRIPTION}}" },
+        { "title": "{{BACKLOG_ITEM}}", "area": "Frontend", "priority": "P1", "body": "{{ONE_LINE_DESCRIPTION}}" }
+      ]
+    }
+  ]
+}
