@@ -1,0 +1,48 @@
+---
+description: Greenfield AI-layer entry. Turn an unstructured idea (brain-dump + research + clarifying questions) into a phased PRD. The lightweight alternative to the epic/agentic-init product-synthesis path.
+argument-hint: "[one-line idea, or empty to use the conversation]"
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, AskUserQuestion
+---
+
+# /create-prd $ARGUMENTS
+
+Create the **PRD** for a greenfield build in `{{manifest.project.name}}`. This is the first asset of
+the **AI layer** and the entry point of the PIV track. It is a **thin frontend** over
+`~/.agentic-workflows/piv-loop-runbook.md` (Phase 0) — read that for the authoritative spec.
+
+Operates under `~/.claude/rules/ecc/common/golden-rules.md` (esp. *reduce assumptions*) and the
+shared rules (nervous-system, agent-routing). **Lightweight greenfield track** — complementary to
+`/agentic-init`'s product synthesis and the epic flow; it does not replace them.
+
+> **Graceful degradation.** Research sub-agents / memory / Context7 are best-effort; skip what's missing.
+
+## Algorithm
+
+1. **Brain-dump (unstructured).** Use `$ARGUMENTS` (or the existing conversation) as the raw idea:
+   product, tentative tech stack, architecture leanings. Stay informal — this is just context.
+2. **Research (sub-agents = context isolation).** Spin up read-only research agents *in parallel*
+   for: the proposed stack/libraries (route to `Explore` / `ruflo-core:researcher`; confirm APIs
+   with Context7), the architecture, and best-practices for this kind of app. Keep only their
+   summaries — protect the main context (Golden Rule 1).
+3. **Reduce assumptions.** Ask the user a **flurry of clarifying questions** with
+   `AskUserQuestion` (multiple-choice + free-text), batching related ones. Keep going until the
+   important ambiguities are resolved — every answer removes assumptions (a bad PRD line ≈ 1000
+   bad code lines). Let the user type their own answer when an option misses.
+4. **Write the structured PRD** to `{{manifest.docs.prd}}` with these sections:
+   - **MVP scope** — what the first version does (reflecting every clarifying answer)
+   - **Out of scope** — what we deliberately are *not* building now
+   - **Tech stack & architecture** — decided stack, data model sketch, deploy target
+   - **Directory structure** — the intended layout
+   - **Phases of Work** — an ordered list; **each phase = one future PIV loop** (e.g.
+     1. Foundation → 2. Core feature → 3. Theming → …). This list drives `/prime` and `/plan-feature`.
+5. **Validate with the human.** Summarize the PRD and confirm alignment before moving on. The
+   unstructured conversation is throwaway — only the PRD survives, so it must be complete.
+
+## Next
+
+`/agentic-init` (or hand-author `AGENTS.md`/`CLAUDE.md` + a `reference/` folder) to finish the AI
+layer, set up `.env.example`, then `/prime` to start the first PIV loop.
+
+## Guardrails
+
+No production deploy · no force-push · no committed secrets. PRD is docs only — never edit app code here.

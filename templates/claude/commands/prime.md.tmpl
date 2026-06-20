@@ -1,0 +1,42 @@
+---
+description: Warm a fresh session — read the PRD, rules, and git log (long-term memory), explore structure, and report the project's state + recommended next phase. Run at the start of every session.
+argument-hint: "[optional focus area]"
+allowed-tools: Read, Bash, Grep, Glob, Task
+---
+
+# /prime $ARGUMENTS
+
+Catch a **fresh session** up to speed on `{{manifest.project.name}}` before any work. This is the
+PIV track's warm-start — a **thin frontend** over `~/.agentic-workflows/piv-loop-runbook.md`
+(Phase 1). Read-only orientation: it produces an understanding report, it does not write code.
+
+Operates under `~/.claude/rules/ecc/common/golden-rules.md` (context is precious; git = memory) and
+complements the SessionStart memory hook. Use it at the start of every new conversation.
+
+> **Graceful degradation.** Memory / Graphify / sub-agent steps are best-effort; fall back to plain
+> reads + `git log` when anything is missing.
+
+## Algorithm
+
+1. **RETRIEVE (best-effort).** Recall prior decisions for this repo+branch:
+   `npx ruflo memory search --query "recent decisions" --namespace "{{manifest.memory.namespace}}"`
+   (or `mcp__claude-flow__agentdb_pattern-search`). Query `graphify-out/graph.json` if present.
+2. **Read the AI layer.** `{{manifest.docs.prd}}` (esp. its **Phases of Work**), the global rules
+   (`AGENTS.md`/`CLAUDE.md`), and any relevant `reference/` / `{{manifest.docs.root}}` docs. For the
+   focus area in `$ARGUMENTS`, read the matching on-demand context.
+3. **Git log = long-term memory.** `git log --oneline -20` (and `git status`) to see what was built
+   recently and infer the patterns/conventions in play.
+4. **Explore structure (context isolation).** Delegate breadth to a research sub-agent
+   (`Task(subagent_type: "Explore")`) to map core files / entry points without bloating the main
+   context. Pull in only its summary.
+5. **Output an understanding report**:
+   - **Project overview** — what it is, the stack.
+   - **Current state** — what exists / what was last built (from git + structure).
+   - **Recommended next phase** — the next unbuilt item from the PRD's Phases of Work.
+   The human validates this before `/plan-feature`.
+
+## Notes
+
+- Evolve this command per project (Golden Rule 2): add reads for the specific things your agent
+  should always check first (migrations → schema, key configs, the `reference/` docs that matter).
+- No edits, no commits — orientation only.

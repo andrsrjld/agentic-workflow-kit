@@ -30,6 +30,15 @@ Last updated: 2026-06-20 — by Claude (initial scaffold)
 - [x] `examples/` — new-project-walkthrough.md
 - [x] Initial commit — decbeb4 (56 files, 5420 insertions)
 
+## Phase 3.5 — Greenfield PIV track (adapted from "no-fluff agentic coding" video)  ✅
+
+- [x] `rules/golden-rules.md` — AI layer + PIV loop + 4 golden rules (context · commandify · git=memory · system-evolution); cross-linked to nervous-system/self-learning/memory-protocol/agent-routing/testing-taxonomy; positioned as opt-in parallel track to the epic flow
+- [x] `agentic-workflows/piv-loop-runbook.md` — model-agnostic PIV spec (Phase 0 AI layer → /prime → PLAN → IMPLEMENT → VALIDATE → system evolution); thin-frontend source for the commands
+- [x] `templates/claude/commands/{create-prd,prime,plan-feature,execute,commit}.md.tmpl` — manifest-driven (`{{manifest.*}}`), graceful-degradation + guardrail blocks, gates reused from manifest
+- [x] `templates/agentic/config.yml` — added `docs.plans: docs/plans` (consumed by plan-feature/execute)
+- [x] README repo-layout + feature list updated; auto-deploys via install Step 4 (rules glob) + Step 7 (templates/runbooks glob), scaffolded by /agentic-init (globs *.tmpl) — no registry edit needed
+- Source: `_transcript.md` (YouTube goOZSXmrYQ4). Additive only; nothing existing changed/removed.
+
 ## Phase 1 — Nervous system on WealthMe (after kit deploy)
 
 - [!] Run `install/install.sh` → BLOCKED: auto-mode classifier denied (settings.json

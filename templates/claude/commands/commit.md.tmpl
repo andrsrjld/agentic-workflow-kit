@@ -1,0 +1,40 @@
+---
+description: Standardized conventional commit — your git history is long-term memory, so every commit reads the same way. Stages, writes a consistent message, and commits (no push, no force).
+argument-hint: "[optional scope or note]"
+allowed-tools: Read, Bash, Grep, Glob
+---
+
+# /commit $ARGUMENTS
+
+Create a **standardized commit** for `{{manifest.project.name}}`. Commits are the project's
+**long-term memory** (Golden Rule 3) — `/prime` reads `git log` to reconstruct what was built and
+what comes next, so consistency matters. **Thin frontend** over
+`~/.agentic-workflows/piv-loop-runbook.md` (Phase 4). Operates under
+`~/.claude/rules/ecc/common/golden-rules.md`.
+
+> **Graceful degradation.** This is plain `git` — no optional tooling required.
+
+## Guardrails (hard limits)
+
+- Commit only — **never push, never force-push, never tag a release** from here.
+- **No secrets.** Refuse to stage `.env`, key files, or anything matching a secret pattern; abort
+  and report if found.
+- **No `Co-Authored-By` trailer** unless this project's `.claude/settings.json` sets
+  `attribution.commit` (per repo policy). The Bash tool's default template may suggest one — omit it.
+
+## Algorithm
+
+1. `git status` + `git diff --staged` (and unstaged) to see what changed. If nothing is staged,
+   stage the intended changes (`git add -A` for the current work, excluding secrets/build artifacts).
+2. **Scan for secrets** in the staged set; abort if any are found.
+3. **Compose a conventional message**: `<type>: <description>` where type ∈
+   `feat | fix | refactor | docs | test | chore | perf | ci`. Use `$ARGUMENTS` as scope/hint when
+   given. Keep the subject imperative and ≤ ~72 chars; add a short body only when it adds signal
+   (what + why, not how). One commit = one coherent change (typically one PIV phase).
+4. `git commit` with that message. Print the resulting `git log --oneline -1`.
+
+## Notes
+
+- Customize per project (Golden Rule 2): tighten the type set, subject style, or body template to
+  match your conventions — the value is that every commit looks the same.
+- After committing, the PIV loop continues: evolve the AI layer if needed, then `/prime` the next phase.

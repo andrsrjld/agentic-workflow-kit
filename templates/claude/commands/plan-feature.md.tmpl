@@ -1,0 +1,45 @@
+---
+description: PLAN step of a PIV loop. Vibe-plan one PRD phase, then write a self-contained structured plan (goal, references, task list, validation strategy) that /execute consumes in a fresh context.
+argument-hint: "[phase name or feature, or empty to use the conversation]"
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, AskUserQuestion
+---
+
+# /plan-feature $ARGUMENTS
+
+The **Plan** in *Plan → Implement → Validate* for `{{manifest.project.name}}`. Turn one focused PRD
+phase into a structured, self-contained plan. **Thin frontend** over
+`~/.agentic-workflows/piv-loop-runbook.md` (Phase 2).
+
+Operates under `~/.claude/rules/ecc/common/golden-rules.md`, `testing-taxonomy.md`, and the shared
+rules. Scope is **one phase only** — keep it focused.
+
+> **Graceful degradation.** Research sub-agents / Context7 / memory are best-effort; skip what's missing.
+
+## Algorithm
+
+1. **Pick the phase.** From `$ARGUMENTS` or the primed conversation — the next unbuilt phase in
+   `{{manifest.docs.prd}}`'s Phases of Work.
+2. **Vibe-plan (unstructured).** Discuss *this phase's* architecture and concrete tasks. Use
+   research sub-agents (`Explore` / `ruflo-core:researcher`) for codebase analysis and Context7 for
+   library APIs — summaries only (Golden Rule 1: protect main context).
+3. **Reduce assumptions.** `AskUserQuestion` until the phase's ambiguities are resolved.
+4. **Write the structured plan** to `{{manifest.docs.plans}}/<phase-slug>.md` with:
+   - **Goal & success criteria** — what "done" means for this phase.
+   - **Context / references** — relevant PRD sections, files, docs, sub-agent findings.
+   - **Task list** — specific steps, down to the **files to create/update**.
+   - **Validation strategy** — *the most important section*. Define how to prove it works **before**
+     any code: type-check/lint → unit → integration → the explicit **E2E user journeys** to run.
+     This is the gate plan `/execute` will follow (`{{manifest.gates.qa}}`, `{{manifest.gates.test}}`,
+     `{{manifest.gates.security}}`, then E2E).
+5. **Iterate with the human.** Refine until aligned. The plan must be **self-contained** — it
+   becomes the *only* context handed to `/execute` after a context reset.
+6. **(Optional, in parallel) `.env.example`.** Ensure every env var the phase needs is listed so
+   `/execute` runs real migrations/servers instead of mock-testing. Never commit real secrets.
+
+## Next
+
+Reset context, then `/execute {{manifest.docs.plans}}/<phase-slug>.md`.
+
+## Guardrails
+
+No production deploy · no force-push · no committed secrets. Planning writes only the plan doc.

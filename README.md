@@ -25,6 +25,11 @@ routing, and a standardized source-of-truth docs format — deployed from this o
 - **Standardized docs** — PRD · User Stories · Acceptance Criteria · Epics · Tasks · Backlog ·
   Definition of Done, identical across every project. See [docs/DOCS-FORMAT.md](docs/DOCS-FORMAT.md).
 - **Two commands** — `/nerve` (the runtime brain) and `/agentic-init` (bootstrap new/existing/maintenance).
+- **Greenfield PIV track** — an opt-in, dead-simple alternative to the epic flow for *new* projects:
+  `/create-prd` → `/prime` → `/plan-feature` → `/execute` → `/commit`, governed by the four
+  **golden rules** (protect context · commandify everything · git = long-term memory · system
+  evolution). Shares the same gates, memory, and guardrails. See the `golden-rules` rule and
+  `agentic-workflows/piv-loop-runbook.md`.
 - **Model-agnostic engine** — runs on Claude Code, Codex, or any harness via the `npx` CLI engine;
   Claude slash-commands and Codex `AGENTS.md` are thin frontends.
 
@@ -52,10 +57,10 @@ zero to a fully agentic state.
 | Path | What |
 |------|------|
 | `install/` | `install.sh` (deploy) + `verify.sh` (doctor) |
-| `rules/` | Global rules (auto-loaded by ECC): nervous-system, self-learning, graph-intelligence, memory-protocol, agent-routing, testing-taxonomy, docs-source-of-truth |
+| `rules/` | Global rules (auto-loaded by ECC): nervous-system, self-learning, graph-intelligence, memory-protocol, agent-routing, testing-taxonomy, docs-source-of-truth, golden-rules (greenfield PIV) |
 | `claude/` | `/nerve` + `/agentic-init` commands, hooks, settings snippet |
-| `templates/` | Per-project scaffolding: `.agentic/config.yml` manifest, `/docs` templates, agent/command/convention templates |
-| `agentic-workflows/` | Portable runbooks (model-agnostic): `nerve-runbook.md`, `bootstrap-new-project.md`, `ADOPTION-GUIDE.md` |
+| `templates/` | Per-project scaffolding: `.agentic/config.yml` manifest, `/docs` templates, agent/command/convention templates (incl. PIV commands: create-prd, prime, plan-feature, execute, commit) |
+| `agentic-workflows/` | Portable runbooks (model-agnostic): `nerve-runbook.md`, `bootstrap-new-project.md`, `piv-loop-runbook.md`, `ADOPTION-GUIDE.md` |
 | `docs/` | Human manuals: install, adoption, architecture, docs-format, testing, troubleshooting |
 | `examples/` | Minimal worked walkthrough |
 | `PROGRESS.md` | Implementation/resumability tracker |

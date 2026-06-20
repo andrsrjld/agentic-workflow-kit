@@ -1,0 +1,49 @@
+---
+description: IMPLEMENT step of a PIV loop. In a fresh context whose only input is the plan, implement the phase, then self-validate through the gates + E2E journeys. Hands back for human validation.
+argument-hint: <path-to-plan>
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task
+---
+
+# /execute $ARGUMENTS
+
+The **Implement** in *Plan → Implement → Validate* for `{{manifest.project.name}}`. Build the phase
+from the plan at **$ARGUMENTS**. **Thin frontend** over `~/.agentic-workflows/piv-loop-runbook.md`
+(Phase 3). Run this in a **fresh session** — the plan is its only context (Golden Rule 1).
+
+Operates under `~/.claude/rules/ecc/common/golden-rules.md`, `testing-taxonomy.md`, `self-learning.md`,
+and the shared rules.
+
+> **Graceful degradation.** Memory / recommender steps are best-effort; the gates are not — a missing
+> gate script is skipped, a failing one blocks.
+
+## Guardrails (hard limits)
+
+- DEV only. NEVER deploy to production. NEVER force-push. NEVER run destructive DB commands.
+  No hardcoded secrets. Do not touch protected paths: `{{manifest.protected_paths}}`.
+
+## Algorithm
+
+1. **Load the plan** at `$ARGUMENTS` — goal, task list, references, and the **validation strategy**.
+   If it's missing or thin, stop and ask for `/plan-feature` first. The plan is self-contained; do
+   not re-load the prior planning conversation.
+2. **Implement in the main session.** Work the task list, creating/updating the listed files. Do
+   **not** delegate implementation to sub-agents (full file context must stay in this session).
+   Run DB migrations and start the app using `.env`.
+3. **Self-validate (bounded loop, attempts 1..3)** against the plan's validation strategy:
+   - `bash {{manifest.gates.qa}}` (lint/static) → `bash {{manifest.gates.test}}` (build/type-check +
+     unit/integration) → `bash {{manifest.gates.security}}` (secrets/deps/destructive SQL).
+   - **E2E user journeys** from the plan — Playwright / Vercel agent-browser when available; capture
+     screenshots as proof.
+   - On a build/type error, route the fix to `ecc:build-error-resolver` (or the language resolver),
+     then re-run. If any gate fails, fix and retry. After attempt 3 still failing → stop, report the
+     failing gate + findings (L3 escalate). **Never weaken tests to pass.**
+4. **JUDGE → DISTILL → CONSOLIDATE (best-effort).**
+   `npx @claude-flow/cli hooks post-task --task-id "<phase-slug>" --success true`;
+   `npx ruflo memory store --namespace "{{manifest.memory.namespace}}:<phase-slug>" --key "<slug>" --value "<lesson>"`.
+5. **Hand back for human validation.** Print: tasks done, each gate verdict, E2E proof, and the
+   distilled lesson. Do **not** commit — the human reviews and runs `/commit` (trust-but-verify).
+
+## Notes
+
+- The implementation is sandwiched by human-owned planning and validation — that is what makes
+  delegating all the coding safe. Stop at the handoff; `/commit` is a separate, human-gated step.

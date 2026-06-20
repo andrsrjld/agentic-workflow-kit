@@ -76,4 +76,5 @@ docs:
   tasks: docs/product/ENGINEERING-TASKS.md
   backlog: docs/BACKLOG.md
   epics: docs/epics
+  plans: docs/plans                 # greenfield PIV track: /plan-feature writes <phase-slug>.md here
   definition_of_done: docs/DEFINITION-OF-DONE.md
