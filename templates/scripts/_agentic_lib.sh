@@ -46,12 +46,23 @@ _agentic_clean() {
   sed -E 's/[[:space:]]+#.*$//; s/^["'"'"']//; s/["'"'"']$//; s/[[:space:]]+$//'
 }
 
-# manifest_list <key> — read an inline list "[a, b, c]" OR a single scalar,
-# emitting one item per line. Empty output if not found / empty list.
+# manifest_list <key> — read a list, emitting one item per line. Handles both an
+# inline flow array "[a, b, c]" AND a multiline flow array (what `prettier` rewrites
+# long inline arrays to: the key line ends with ":" and the "[ ... ]" spans the
+# following lines). Empty output if not found / empty list.
 manifest_list() {
-  local raw; raw="$(manifest_get "$1")"
+  local key="$1" raw; raw="$(manifest_get "$key")"
+  if [ -z "$raw" ]; then
+    # Value may be a multiline flow array starting on the line(s) after "key:".
+    local file leaf; file="$(_agentic_find_manifest)"; leaf="${key##*.}"
+    [ -z "$file" ] && return
+    raw="$(awk -v k="$leaf" '
+      $0 ~ "(^|[[:space:]])" k ":[[:space:]]*$" {grab=1; next}
+      grab { buf = buf " " $0; if ($0 ~ /\]/) {print buf; exit} }
+    ' "$file" 2>/dev/null)"
+  fi
   [ -z "$raw" ] && return
-  raw="${raw#[}"; raw="${raw%]}"
+  raw="${raw#*[}"; raw="${raw%%]*}"          # keep only what's between the brackets
   printf '%s' "$raw" | tr ',' '\n' | sed -E 's/^[[:space:]]*//; s/[[:space:]]*$//' | grep -v '^$'
 }
 
