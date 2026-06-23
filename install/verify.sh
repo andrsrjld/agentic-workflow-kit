@@ -124,6 +124,15 @@ if [ -f "$AW_HOME/templates/agentic/config.yml" ]; then pass "config.yml manifes
 if compgen -G "$AW_HOME/*.md" >/dev/null 2>&1; then pass "runbooks (*.md) deployed"; else warn "no runbooks in $AW_HOME (re-run install.sh Step 7)"; fi
 if [ -f "$AW_HOME/expert-personas.md" ]; then pass "expert-personas.md deployed"; else warn "expert-personas.md missing (re-run install.sh Step 7)"; fi
 
+# --- Community agents (optional, informational) ------------------------------
+head "Community sub-agents ($CLAUDE_HOME/agents)"
+_agent_count=$(find "$CLAUDE_HOME/agents" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+if [ "$_agent_count" -gt 0 ]; then
+  pass "$_agent_count agent file(s) in ~/.claude/agents/"
+else
+  warn "no agents found — run install.sh Step 9 to install community agents (optional)"
+fi
+
 # --- Memory engine (graceful note when absent) -------------------------------
 head "Memory engine (optional accelerator)"
 if command -v npx >/dev/null 2>&1; then

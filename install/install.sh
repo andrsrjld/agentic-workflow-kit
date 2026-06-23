@@ -299,6 +299,45 @@ else
   warn "verify.sh not found/executable — run: bash $SCRIPT_DIR/install/verify.sh"
 fi
 
+# =============================================================================
+# Step 9 — Community sub-agents (optional)
+# What: install 154+ community agents from awesome-claude-code-subagents into
+#       ~/.claude/agents/ (global, not project-specific).
+# Why: these are GLOBAL skill agents — they land in ~/.claude/agents/ and are
+#      available in every project without polluting project-level templates.
+# MANUAL: git clone https://github.com/VoltAgent/awesome-claude-code-subagents /tmp/acs
+#         bash /tmp/acs/install-agents.sh
+# =============================================================================
+step "Step 9 — Community sub-agents (optional, ~/.claude/agents/)"
+info "This installs 154+ curated agents from awesome-claude-code-subagents."
+info "They land in ~/.claude/agents/ globally — no project files are touched."
+printf '    Install community sub-agents? [y/N] '
+read -r _INSTALL_AGENTS 2>/dev/null || _INSTALL_AGENTS="N"
+if [ "$_INSTALL_AGENTS" = "y" ] || [ "$_INSTALL_AGENTS" = "Y" ]; then
+  _ACS_TMP="$(mktemp -d)"
+  if command -v git >/dev/null 2>&1; then
+    if git clone --depth=1 https://github.com/VoltAgent/awesome-claude-code-subagents "$_ACS_TMP" >/dev/null 2>&1; then
+      ok "cloned awesome-claude-code-subagents"
+      if [ -x "$_ACS_TMP/install-agents.sh" ]; then
+        bash "$_ACS_TMP/install-agents.sh" && ok "community agents installed -> $CLAUDE_HOME/agents/" || warn "install-agents.sh reported errors"
+      else
+        # Fallback: copy agent .md files directly into ~/.claude/agents/
+        mkdir -p "$CLAUDE_HOME/agents"
+        find "$_ACS_TMP/categories" -name "*.md" -exec cp {} "$CLAUDE_HOME/agents/" \; 2>/dev/null
+        _count=$(find "$CLAUDE_HOME/agents" -name "*.md" | wc -l | tr -d ' ')
+        ok "copied agent files directly -> $CLAUDE_HOME/agents/ ($_count total)"
+      fi
+    else
+      warn "git clone failed — check network. MANUAL: bash install/install.sh (retry Step 9)"
+    fi
+    rm -rf "$_ACS_TMP"
+  else
+    warn "git not found — cannot clone community agents"
+  fi
+else
+  info "Skipped. Run later:  git clone https://github.com/VoltAgent/awesome-claude-code-subagents /tmp/acs && bash /tmp/acs/install-agents.sh"
+fi
+
 step "Done"
 info "Next: open any project and run  /agentic-init  then  /nerve \"<task>\""
 info "Edit the kit and re-run this installer to push changes — the kit is the source of truth."
