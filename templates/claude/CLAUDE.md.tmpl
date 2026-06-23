@@ -25,6 +25,8 @@ Organ commands `/nerve` (and you) orchestrate:
 
 | Command | Use for |
 | ------- | ------- |
+| `/nerve "<task>"` | Front door — auto-selects persona, routes, runs gates, learns |
+| `/engage <persona> "<task>"` | Force a specific expert persona, then execute via `/nerve` |
 | `/agentic-start "<brief>"` | Raw task/enhancement drop → epic/task shaping → optional dev start |
 | `/task-work EPIC-XXX <n>` | Work ONE task group → gates → branch/push/PR to `{{manifest.branches.integration}}` |
 | `/epic-loop docs/epics/EPIC-XXX.md` | Run a whole epic end-to-end with gates + DEV deploy |
@@ -74,6 +76,27 @@ quality/security is handled by pre-built ECC/Ruflo agents):
 **Reuse policy.** Before creating or invoking a custom agent, check the pre-built ECC and Ruflo
 families. Reuse a pre-built agent when one fits; use a custom agent only for genuinely
 project-specific behavior. Do not call every installed agent.
+
+---
+
+## Expert Personas (Default Dev Memory)
+
+The 10 expert personas in `~/.agentic-workflows/expert-personas.md` are the default mindset
+modes for every development and debugging session. `/nerve` auto-selects the right one;
+`/engage <persona>` forces a specific one.
+
+| Persona | Use when |
+| ------- | -------- |
+| `startup-mvp` | Building an MVP or greenfield project from scratch |
+| `codebase-audit` | Joining an unfamiliar codebase, architecture review |
+| `debug-production` | Investigating a bug, production issue, or outage |
+| `perf-optimize` | Performance bottlenecks, memory leaks, scaling |
+| `clean-architecture` | Refactoring messy code into clean architecture |
+| `backend-systems` | API design, database schema, caching, infra |
+| `frontend-engineer` | UI components, accessibility, responsive design |
+| `tech-lead` | Pre-code planning, tradeoffs, architecture decisions |
+| `security-audit` | Security review, vulnerabilities, auth, injection |
+| `devops-deploy` | CI/CD, Docker, Kubernetes, monitoring, deployment |
 
 ---
 

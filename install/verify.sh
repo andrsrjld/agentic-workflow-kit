@@ -57,9 +57,9 @@ else
   warn "rules dir absent — re-run install.sh Step 4"
 fi
 
-# --- Commands (/nerve + /agentic-init) ---------------------------------------
+# --- Commands (/nerve + /agentic-init + /engage) -----------------------------
 head "Commands ($CLAUDE_HOME/commands)"
-for c in nerve agentic-init; do
+for c in nerve agentic-init engage; do
   if [ -f "$CLAUDE_HOME/commands/$c.md" ]; then pass "/$c command"; else warn "/$c command missing (re-run install.sh Step 5)"; fi
 done
 
@@ -120,6 +120,7 @@ if [ -d "$AW_HOME/templates" ]; then pass "templates/ deployed"; else warn "temp
 if [ -f "$AW_HOME/templates/scripts/_agentic_lib.sh" ]; then pass "_agentic_lib.sh template present"; else warn "_agentic_lib.sh template missing"; fi
 if [ -f "$AW_HOME/templates/agentic/config.yml" ]; then pass "config.yml manifest template present"; else warn "config.yml manifest template missing"; fi
 if compgen -G "$AW_HOME/*.md" >/dev/null 2>&1; then pass "runbooks (*.md) deployed"; else warn "no runbooks in $AW_HOME (re-run install.sh Step 7)"; fi
+if [ -f "$AW_HOME/expert-personas.md" ]; then pass "expert-personas.md deployed"; else warn "expert-personas.md missing (re-run install.sh Step 7)"; fi
 
 # --- Memory engine (graceful note when absent) -------------------------------
 head "Memory engine (optional accelerator)"

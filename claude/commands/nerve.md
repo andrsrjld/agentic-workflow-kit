@@ -37,6 +37,24 @@ Memory keys are `<namespace>[:<branch>][:<epic>]`.
    and a complexity/risk level. If it is a trivial, low-risk, single-file transform,
    just do it directly with `Edit`, run the matching gate, and skip to step 5.
 
+   **Persona auto-select.** After classifying, map to the default expert persona
+   from `~/.agentic-workflows/expert-personas.md` and print it as a framing header:
+
+   | Capability | Persona |
+   |------------|---------|
+   | coding — greenfield / MVP | `startup-mvp` |
+   | review — architecture / unfamiliar codebase | `codebase-audit` |
+   | build-fix / bug / debugging | `debug-production` |
+   | performance / optimization | `perf-optimize` |
+   | refactor / clean-up | `clean-architecture` |
+   | coding — backend / API / DB | `backend-systems` |
+   | coding — frontend / UI | `frontend-engineer` |
+   | architecture / planning | `tech-lead` |
+   | security | `security-audit` |
+   | deploy / devops / infra | `devops-deploy` |
+
+   Override with `/engage <persona> "$ARGUMENTS"` to force a specific persona.
+
 2. **RETRIEVE.** Warm the context from all available sources (merge what returns):
    - Memory: `npx ruflo memory search --query "$ARGUMENTS" --namespace "<namespace>"`
      (or `agentdb_pattern-search` / `agentdb_semantic-route` MCP).
