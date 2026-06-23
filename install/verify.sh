@@ -57,11 +57,13 @@ else
   warn "rules dir absent — re-run install.sh Step 4"
 fi
 
-# --- Commands (/nerve + /agentic-init + /engage) -----------------------------
-head "Commands ($CLAUDE_HOME/commands)"
+# --- Commands (/nerve + /agentic-init + /engage) + persona + gotchas ---------
+head "Commands + voice files ($CLAUDE_HOME)"
 for c in nerve agentic-init engage; do
   if [ -f "$CLAUDE_HOME/commands/$c.md" ]; then pass "/$c command"; else warn "/$c command missing (re-run install.sh Step 5)"; fi
 done
+if [ -f "$CLAUDE_HOME/persona.md" ]; then pass "persona.md (Claude's voice)"; else warn "persona.md missing (re-run install.sh Step 5)"; fi
+if [ -f "$CLAUDE_HOME/gotchas.md" ]; then pass "gotchas.md (known traps)"; else warn "gotchas.md missing (re-run install.sh Step 5)"; fi
 
 # --- Nerve hooks (3 expected) ------------------------------------------------
 head "Nerve hooks ($CLAUDE_HOME/hooks)"

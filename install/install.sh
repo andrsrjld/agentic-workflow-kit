@@ -192,7 +192,7 @@ fi
 #      consolidate, and the safety guardrail. Hooks are made executable.
 # MANUAL: cp claude/commands/* ~/.claude/commands/ ; cp claude/hooks/* ~/.claude/hooks/ ; chmod +x ~/.claude/hooks/*.sh
 # =============================================================================
-step "Step 5 — Deploying commands + hooks"
+step "Step 5 — Deploying commands, hooks, persona, gotchas"
 mkdir -p "$CLAUDE_HOME/commands" "$CLAUDE_HOME/hooks"
 if compgen -G "$SCRIPT_DIR/claude/commands/*" >/dev/null; then
   cp -R "$SCRIPT_DIR"/claude/commands/* "$CLAUDE_HOME/commands/"
@@ -207,6 +207,13 @@ if compgen -G "$SCRIPT_DIR/claude/hooks/*" >/dev/null; then
 else
   warn "no hooks found in $SCRIPT_DIR/claude/hooks — skipping"
 fi
+# Deploy top-level .md files (persona.md, gotchas.md) — referenced via @file in CLAUDE.md.
+# MANUAL: cp claude/*.md ~/.claude/
+for _md in "$SCRIPT_DIR"/claude/*.md; do
+  [ -f "$_md" ] || continue
+  cp "$_md" "$CLAUDE_HOME/$(basename "$_md")"
+  ok "deployed $(basename "$_md") -> $CLAUDE_HOME"
+done
 
 # =============================================================================
 # Step 6 — Merge hook wiring + permissions into settings.json
