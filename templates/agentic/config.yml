@@ -60,6 +60,29 @@ gates:
   test: scripts/test.sh             # install + build/type-check + unit tests
   security: scripts/security-check.sh  # secrets, env files, destructive SQL, dep audit
 
+# Loop engineering control plane. Disabled by default: enabling a loop never
+# grants permission to push, open PRs, deploy, or mutate third-party systems.
+# L1 is report-only; L2 may prepare a patch in an isolated worktree but always
+# stops at the human gate. L3 unattended mutation is intentionally unsupported.
+loop:
+  enabled: false                     # opt in only after `bash scripts/loop-readiness.sh`
+  pattern: daily-triage              # daily-triage | issue-triage | ci-sweeper | dependency-sweeper | changelog-drafter | post-merge-cleanup | pr-babysitter
+  level: L1                          # L1 report-only | L2 assisted
+  mode: report-only                  # report-only (L1) | assisted (L2)
+  cadence: manual                    # document the host scheduler; this kit does not schedule by itself
+  state_file: docs/LOOP-STATE.md     # human-readable current queue and overrides
+  run_log: docs/LOOP-RUN-LOG.md      # append-only, durable run observability
+  ledger: .agentic/loop-ledger.tsv   # local counters for mechanical cap enforcement
+  constraints_file: .agentic/loop-constraints.md
+  kill_switch: .agentic/loop.pause   # local file; creating it stops the next run
+  max_attempts_per_item: 3
+  max_runs_per_day: 1
+  token_budget_per_day: 100000
+  max_subagents_per_run: 0
+  worktree_required: true            # mandatory before an L2 patch attempt
+  verifier_required: true            # maker and checker must be separate at L2
+  human_gate: required               # required before every remote or irreversible action
+
 # Self-learning memory.
 memory:
   enabled: true                     # false = pure no-op (no AgentDB/Ruflo calls anywhere)

@@ -24,6 +24,31 @@ Resolve the **memory namespace** once: `memory.namespace` if set, else
 `git rev-parse --abbrev-ref HEAD` (default `main` on error). Memory keys are
 `<namespace>[:<branch>][:<epic>]`.
 
+## Optional loop preflight
+
+`/nerve` remains the task engine. When it is invoked by a configured loop, the
+loop is its **control plane**: it supplies one bounded task, a run id, and the
+operating limits; it never replaces the L1/L2/L3 algorithm below.
+
+When `loop.enabled: true` in `.agentic/config.yml`, before triage or editing:
+
+1. Read `loop.constraints_file`, `loop.state_file`, and the most recent entries
+   in `loop.run_log`. Treat constraints as binding.
+2. Exit report-only and record `outcome: paused` if `loop.kill_switch` exists.
+3. Sum today's `tokens_estimate` entries in the run log. If the configured
+   daily cap is reached, record `outcome: budget-exhausted` and do not make an
+   edit. At 80% of the cap, switch the current run to report-only.
+4. Run `bash scripts/loop-readiness.sh` when that project script exists. An
+   invalid enabled configuration is an escalation, not an opportunity to guess.
+5. Enforce `max_attempts_per_item` mechanically in the loop ledger/run log.
+   After the limit, set the relevant task or epic to `blocked` and hand off.
+
+The kit certifies only **L1 report-only** and **L2 assisted** loops. An L2 loop
+creates one isolated worktree per fix attempt and uses a separate verifier; it
+may prepare a local patch but cannot push, open a PR, merge, deploy, or mutate
+third-party systems without explicit human approval. L3 unattended mutation is
+out of scope for this kit.
+
 ---
 
 ## The three layers

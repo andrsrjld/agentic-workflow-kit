@@ -11,6 +11,12 @@ graphify-out/
 # Per-project machine overrides
 .agentic/config.local.yml
 
+# Local loop-engineering control files and isolated worktrees. Durable loop
+# decisions and observability remain in docs/LOOP*.md, not in these files.
+.agentic/loop.pause
+.agentic/loop-ledger.tsv
+.agentic/worktrees/
+
 # OS
 .DS_Store
 Thumbs.db

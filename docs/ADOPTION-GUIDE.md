@@ -137,6 +137,11 @@ auto-detection at runtime.
 | `gates.qa` | lint + static checks | `scripts/qa.sh` |
 | `gates.test` | install + build/type-check + unit tests | `scripts/test.sh` |
 | `gates.security` | secrets, env files, destructive SQL, dep audit | `scripts/security-check.sh` |
+| `loop.enabled` | enables the loop control plane; **false by default** | `false` |
+| `loop.pattern` / `loop.level` / `loop.mode` | selected pattern and L1 report-only or L2 assisted contract | `daily-triage` / `L1` / `report-only` |
+| `loop.*_file` | constraints, state, run-log, and kill-switch paths | kit loop templates |
+| `loop.max_*` / `loop.token_budget_per_day` | hard run, attempt, sub-agent, and daily cost bounds | conservative defaults |
+| `loop.worktree_required` / `loop.verifier_required` / `loop.human_gate` | L2 isolation, maker-checker split, and approval policy | `true` / `true` / `required` |
 | `memory.enabled` | `false` = pure no-op (no AgentDB/Ruflo calls anywhere) | `true` |
 | `memory.namespace` | `""` = use `project.name`; keys are `<ns>[:<branch>][:<epic>]` | `project.name` |
 | `memory.warm_start` | SessionStart hook injects top-K relevant memory | `true` |
@@ -154,6 +159,11 @@ auto-detection at runtime.
 > tenant-scoping checks (correct for single-tenant / non-SaaS apps), and
 > `memory.enabled: false` makes the whole self-learning layer a no-op. Both are
 > graceful — the workflow runs fine with them off.
+
+> **Loop enablement is a third, deliberately conservative switch.**
+> `loop.enabled: false` is the default. Set it to `true` only after selecting a
+> pattern and passing `bash scripts/loop-readiness.sh`; it still does not permit
+> pushes, PRs, deployments, or third-party writes. See [LOOP-ENGINEERING.md](LOOP-ENGINEERING.md).
 
 The detection logic lives in `templates/scripts/_agentic_lib.sh`
 (`manifest_get`, `manifest_list`, `detect_pm`, `detect_monorepo_tool`,

@@ -45,10 +45,10 @@ command -v npx   >/dev/null 2>&1 && pass "npx present"        || warn "npx not f
 command -v claude >/dev/null 2>&1 && pass "claude CLI present" || warn "claude CLI not found — plugin/MCP/hook wiring is manual"
 command -v rtk   >/dev/null 2>&1 && pass "rtk present (token saver)" || warn "rtk not found (optional token saver)"
 
-# --- Global rules (7 expected) -----------------------------------------------
+# --- Global rules (8 expected) -----------------------------------------------
 head "Global rules ($CLAUDE_HOME/rules/ecc/common)"
 RULES_DEST="$CLAUDE_HOME/rules/ecc/common"
-EXPECTED_RULES=(nervous-system memory-protocol self-learning graph-intelligence docs-source-of-truth testing-taxonomy agent-routing)
+EXPECTED_RULES=(nervous-system memory-protocol self-learning graph-intelligence docs-source-of-truth testing-taxonomy agent-routing loop-engineering)
 if [ -d "$RULES_DEST" ]; then
   for r in "${EXPECTED_RULES[@]}"; do
     if [ -f "$RULES_DEST/$r.md" ]; then pass "rule $r.md"; else warn "rule $r.md missing (re-run install.sh Step 4)"; fi
@@ -123,6 +123,11 @@ if [ -f "$AW_HOME/templates/scripts/_agentic_lib.sh" ]; then pass "_agentic_lib.
 if [ -f "$AW_HOME/templates/agentic/config.yml" ]; then pass "config.yml manifest template present"; else warn "config.yml manifest template missing"; fi
 if compgen -G "$AW_HOME/*.md" >/dev/null 2>&1; then pass "runbooks (*.md) deployed"; else warn "no runbooks in $AW_HOME (re-run install.sh Step 7)"; fi
 if [ -f "$AW_HOME/expert-personas.md" ]; then pass "expert-personas.md deployed"; else warn "expert-personas.md missing (re-run install.sh Step 7)"; fi
+if [ -f "$AW_HOME/loop-runbook.md" ]; then pass "loop-runbook.md deployed"; else warn "loop-runbook.md missing (re-run install.sh Step 7)"; fi
+if [ -f "$AW_HOME/templates/agentic/loop-constraints.md" ]; then pass "loop constraints template present"; else warn "loop constraints template missing"; fi
+if [ -f "$AW_HOME/templates/scripts/loop-readiness.sh" ]; then pass "loop readiness template present"; else warn "loop readiness template missing"; fi
+if [ -f "$AW_HOME/templates/scripts/loop-ledger.sh" ]; then pass "loop ledger template present"; else warn "loop ledger template missing"; fi
+if [ -f "$AW_HOME/templates/codex/AGENTS.md.tmpl" ]; then pass "Codex loop adapter template present"; else warn "Codex loop adapter template missing"; fi
 
 # --- Community agents (optional, informational) ------------------------------
 head "Community sub-agents ($CLAUDE_HOME/agents)"

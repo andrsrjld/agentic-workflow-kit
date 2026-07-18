@@ -213,6 +213,9 @@ Nothing above is Claude-only:
 - Every learning phase has both an **MCP path** (Claude) and a **portable CLI
   path** (`npx ruflo …`, `npx @claude-flow/cli …`).
 - Codex uses an `AGENTS.md` entry as its frontend over the same runbooks.
+- Optional loops are a separate, bounded control plane over `/nerve`: their
+  policy/state/budget preflight runs before task execution, and L2 adds an
+  isolated maker/checker worktree flow. See [LOOP-ENGINEERING.md](LOOP-ENGINEERING.md).
 
 ---
 

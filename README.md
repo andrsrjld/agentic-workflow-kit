@@ -24,6 +24,9 @@ routing, and a standardized source-of-truth docs format — deployed from this o
   project agents only for project-specific behavior.
 - **Standardized docs** — PRD · User Stories · Acceptance Criteria · Epics · Tasks · Backlog ·
   Definition of Done, identical across every project. See [docs/DOCS-FORMAT.md](docs/DOCS-FORMAT.md).
+- **Bounded loop engineering** — opt-in L1 triage and L2 assisted loops with budgets, state,
+  readiness checks, isolated worktrees, verifier split, kill-switch, and mandatory human gates.
+  See [docs/LOOP-ENGINEERING.md](docs/LOOP-ENGINEERING.md).
 - **Two commands** — `/nerve` (the runtime brain) and `/agentic-init` (bootstrap new/existing/maintenance).
 - **Model-agnostic engine** — runs on Claude Code, Codex, or any harness via the `npx` CLI engine;
   Claude slash-commands and Codex `AGENTS.md` are thin frontends.
@@ -52,11 +55,11 @@ zero to a fully agentic state.
 | Path | What |
 |------|------|
 | `install/` | `install.sh` (deploy) + `verify.sh` (doctor) |
-| `rules/` | Global rules (auto-loaded by ECC): nervous-system, self-learning, graph-intelligence, memory-protocol, agent-routing, testing-taxonomy, docs-source-of-truth |
+| `rules/` | Global rules (auto-loaded by ECC): nervous-system, self-learning, graph-intelligence, memory-protocol, agent-routing, testing-taxonomy, docs-source-of-truth, loop-engineering |
 | `claude/` | `/nerve` + `/agentic-init` commands, hooks, settings snippet |
-| `templates/` | Per-project scaffolding: `.agentic/config.yml` manifest, `/docs` templates, agent/command/convention templates |
-| `agentic-workflows/` | Portable runbooks (model-agnostic): `nerve-runbook.md`, `bootstrap-new-project.md`, `ADOPTION-GUIDE.md` |
-| `docs/` | Human manuals: install, adoption, architecture, docs-format, testing, troubleshooting |
+| `templates/` | Per-project scaffolding: manifest, docs, loop controls, worktree/readiness scripts, and Claude/Codex adapters |
+| `agentic-workflows/` | Portable runbooks (model-agnostic): nerve, bootstrap, and loop control-plane algorithms |
+| `docs/` | Human manuals: install, adoption, architecture, loop engineering, docs format, testing, troubleshooting |
 | `examples/` | Minimal worked walkthrough |
 | `PROGRESS.md` | Implementation/resumability tracker |
 

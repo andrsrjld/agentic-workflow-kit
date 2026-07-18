@@ -24,6 +24,7 @@ Last updated: 2026-06-20 — by Claude (initial scaffold)
 - [x] `templates/docs/` — PRD,USER-STORIES,ACCEPTANCE-CRITERIA,ENGINEERING-TASKS,BACKLOG,DEFINITION-OF-DONE,epics/README,EPIC-template,EPIC-000-bootstrap,backlog.json (valid JSON)
 - [x] `templates/claude/` — CLAUDE/AGENTS/CONVENTIONS .tmpl + 6 agents/*.tmpl + 6 commands/*.tmpl (manifest-driven, tenant-aware, discovery-first)
 - [x] `agentic-workflows/` runbooks — nerve-runbook.md, bootstrap-new-project.md (ADOPTION-GUIDE.md lives under docs/, installer copies it to ~/.agentic-workflows)
+- [x] Loop-engineering control plane — opt-in manifest, constraints, state/run-log docs, readiness and worktree templates, L1/L2 runbook, and Codex triage/verifier adapters
 - [x] `install/install.sh` — idempotent installer
 - [x] `install/verify.sh` — doctor — read-only PASS/WARN table, exits 0 on warnings
 - [x] `docs/` — INSTALL, ADOPTION-GUIDE, ARCHITECTURE, DOCS-FORMAT, TESTING, TROUBLESHOOTING

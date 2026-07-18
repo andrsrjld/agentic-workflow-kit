@@ -212,10 +212,13 @@ and the `npx` engine — no Claude-only tools required.
    - `~/.agentic-workflows/nerve-runbook.md` — the `/nerve` brain algorithm.
    - `~/.agentic-workflows/bootstrap-new-project.md` — the `/agentic-init`
      (new | existing | maintenance) algorithm.
+   - `~/.agentic-workflows/loop-runbook.md` — the optional bounded loop control
+     plane for `/nerve`.
    - `~/.agentic-workflows/ADOPTION-GUIDE.md` — the full zero→agentic guide.
 3. **Codex** uses an `AGENTS.md` entry as its frontend over the same runbooks (it
    translates "`/task-work EPIC-009 1`" into concrete steps rather than pretending
-   to run a Claude-only command).
+   to run a Claude-only command). Copy `templates/codex/` into `.codex/` when
+   bootstrapping a Codex project; it includes the loop triage and verifier adapters.
 4. **npx-only.** Every engine phase has a portable CLI form
    (`npx ruflo memory …`, `npx @claude-flow/cli hooks …`) documented in
    [ARCHITECTURE.md](ARCHITECTURE.md) and the runbooks. With memory/Ruflo absent,

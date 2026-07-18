@@ -1,0 +1,25 @@
+# Agentic Workflow Kit — Codex Loop Adapter
+
+Use the model-agnostic runbooks in `~/.agentic-workflows/`. Translate workflow
+instructions into concrete repository actions; do not pretend that Claude-only
+slash commands execute in Codex.
+
+## `/nerve` loop contract
+
+When a task arrives from an enabled loop, first read `.agentic/config.yml`,
+`loop.constraints_file`, `loop.state_file`, and `loop.run_log`. Respect the
+kill-switch and daily budget; at 80% budget, produce a report only. Run
+`bash scripts/loop-readiness.sh` if present.
+
+- **L1 / report-only:** inspect and update state/log only; never edit source.
+- **L2 / assisted:** work on one bounded root cause in a worktree created with
+  `bash scripts/loop-worktree.sh create <run-id>`. A different verifier agent
+  must run the gates before a patch can be proposed.
+- Never push, open/update a PR, merge, deploy, publish, change credentials, or
+  mutate a third-party service without the user's explicit approval.
+- After three attempts or any ambiguity, protected path, or verifier conflict:
+  mark the item blocked, append evidence to the loop log and active epic
+  Automation Log, then stop.
+
+For raw tasks, follow `nerve-runbook.md`; for an epic task use the project
+workflow. Treat memory as an accelerator and tracked docs as the record.

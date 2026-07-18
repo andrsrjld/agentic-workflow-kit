@@ -11,7 +11,7 @@ runbook for the authoritative algorithm; this command adapts it to Claude Code.
 
 It also operates under the global rules auto-loaded from `~/.claude/rules/ecc/common/*.md`
 (nervous-system, self-learning, graph-intelligence, memory-protocol, agent-routing,
-testing-taxonomy). Follow them.
+testing-taxonomy, loop-engineering). Follow them.
 
 > **Graceful degradation.** Every memory / graph / recommendation step is best-effort. If
 > `.agentic/config.yml`, Ruflo, AgentDB, Graphify, or an MCP tool is missing, skip that step and
@@ -28,6 +28,17 @@ Read `.agentic/config.yml` if present. Resolve once:
 - **gates** = `{{manifest.gates.qa}}`, `{{manifest.gates.test}}`, `{{manifest.gates.security}}`.
 
 Memory keys are `<namespace>[:<branch>][:<epic>]`.
+
+### Loop preflight (only when enabled)
+
+If `.agentic/config.yml` sets `loop.enabled: true`, read the configured loop
+constraints, state, and run log before triage. Stop with a recorded `paused`
+outcome if the kill-switch exists; stop at the daily budget and switch to
+report-only at 80%. Run `bash scripts/loop-readiness.sh` when available.
+
+An L1 loop may report only. An L2 loop may make one local attempt only in an
+isolated worktree with a separate verifier. Neither level may push, open a PR,
+merge, deploy, or mutate a third-party service without explicit human approval.
 
 ## Algorithm
 

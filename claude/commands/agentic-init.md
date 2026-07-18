@@ -38,7 +38,7 @@ and project type (workspaces → monorepo, else single-app).
 
 ### new
 1. Scaffold from `~/.agentic-workflows/templates/`: `claude/` (commands, agents,
-   hooks, settings snippet), gate `scripts/`, `/docs` skeletons — substitute
+   hooks, settings snippet), applicable `codex/` adapter, gate `scripts/`, `/docs` skeletons — substitute
    `{{placeholders}}` from detection/answers.
 2. Write `.agentic/config.yml` from the template with detected values; leave
    unknowns blank (auto at runtime).
@@ -47,17 +47,21 @@ and project type (workspaces → monorepo, else single-app).
    (standardized format — see the `docs-source-of-truth` rule).
 4. Make gate scripts executable; merge `.claude/settings.json` hooks
    non-destructively (preserve any existing rtk / guardrail entries).
-5. Kick off: `/nerve "<first task>"` or `/task-work EPIC-000 1`.
+5. Seed disabled loop constraints, state/run-log docs, and readiness/ledger/worktree
+   helpers. Do not schedule or enable a loop before human review.
+6. Kick off: `/nerve "<first task>"` or `/task-work EPIC-000 1`.
 
 ### existing (non-destructive)
 1. Detect stack / pm / monorepo / branches / layout.
 2. Write `.agentic/config.yml` with detected values; surface for user review.
    Leave `tenant.scope_fields: []` unless multi-tenant evidence is found.
-3. Drop generic `scripts/`, `.claude/{hooks,agents,commands}/`; merge `settings.json`
-   non-destructively. Never overwrite project customizations.
+3. Drop generic `scripts/`, `.claude/{hooks,agents,commands}/`, and the applicable
+   `.codex/` adapter; merge `settings.json` non-destructively. Never overwrite
+   project customizations.
 4. Reverse-engineer initial `/docs` **from the actual code** (modules/routes/domains),
    in the standard format, marked as drafts for human review.
-5. Verify `git diff` shows ONLY `.agentic/`, `.claude/`, `/docs/`, `scripts/`
+5. Add disabled loop controls; do not schedule or enable them.
+6. Verify `git diff` shows ONLY `.agentic/`, `.claude/`, `/docs/`, `scripts/`
    additions. Stop and report if anything else changed.
 
 ### maintenance
@@ -65,6 +69,7 @@ and project type (workspaces → monorepo, else single-app).
    preserving project customizations.
 2. Fill missing standard artifacts (e.g. `DEFINITION-OF-DONE.md`,
    `ACCEPTANCE-CRITERIA.md`) and missing manifest keys with sane defaults.
+   Add missing loop controls disabled; preserve any human-approved loop policy.
 3. Normalize `docs/epics/*` statuses against the canonical lifecycle and the
    `epics/README.md` registry.
 4. Run the gates to confirm no regression; report drift.
