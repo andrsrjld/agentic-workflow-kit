@@ -16,7 +16,7 @@
 A task is **done** only when every box is checked:
 
 - [ ] **Merged** — change is on the integration branch via a reviewed PR (never force-pushed, never direct to the primary/production branch).
-- [ ] **Acceptance Criteria pass** — every criterion for the story/task (`ACCEPTANCE-CRITERIA.md` form) is demonstrably true: an automated test asserts it, a gate passes on it, or a reviewer verified it against the running app. No "works well"-style unverifiable claims.
+- [ ] **Acceptance Criteria pass** — every criterion for the story/task (`ACCEPTANCE-CRITERIA.md` form) is demonstrably true: an automated test asserts it, a gate passes on it, or a reviewer verified it against the running app. No "works well"-style unverifiable claims. Reviewer verification is **interim evidence only**: before the epic advances past `ready-for-qa`, every epic-level criterion must be asserted by an automated test that runs in `gates.test` — a feature is only as protected as the tripwire it leaves behind.
 - [ ] **Gates green** — `gates.qa`, `gates.test`, and `gates.security` (from `.agentic/config.yml`) all PASS on the change. A red gate blocks done.
 - [ ] **Tests added/updated** — new or changed behavior is covered by unit / integration / E2E tests as appropriate; coverage does not regress.
 - [ ] **Security reviewed** — no secrets committed, no new injection/authz/SSRF surface; tenant scoping honored where `tenant.scope_fields` is non-empty; protected paths untouched (or change explicitly reviewed).

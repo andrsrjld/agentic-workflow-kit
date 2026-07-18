@@ -56,15 +56,20 @@ first (`hooks_route` / `guidance_recommend`), then the static fallback below.
    `git switch -c feat/<epic-slug>-task-<n>-<heading-slug> origin/{{manifest.branches.integration}}`
    (slug = lowercased heading, non-alphanumerics → `-`). If the branch already exists, switch to it.
 4. **Bounded loop (attempt 1..3)**:
-   a. `Task(subagent_type: "code-agent")` with the task, its sub-steps, acceptance criteria, relevant
-   paths, and (if retry) the prior findings.
-   b. **Review gate** → run the Review-gate agents (reviewers only for the file types that changed),
+   a. **Write tests first (RED)** → `Task(subagent_type: "test-agent")` derives automated tests from
+   the task's acceptance criteria + Test Plan (unit/integration; one E2E smoke when the task touches
+   a critical journey). New tests must FAIL before implementation and ship with the change. On a
+   retry, reuse the existing tests instead of rewriting them.
+   b. **Implement (GREEN)** → `Task(subagent_type: "code-agent")` with the task, its sub-steps,
+   acceptance criteria, relevant paths, the failing tests to satisfy, and (if retry) the prior findings.
+   c. **Review gate** → run the Review-gate agents (reviewers only for the file types that changed),
    aggregate to PASS/FAIL.
-   c. **Security gate** → run `ecc:security-reviewer` + `security-agent`, aggregate to PASS/FAIL.
-   d. **Test gate** → `Task(subagent_type: "test-agent")`. If it FAILs on a TypeScript/compile/build
-   error, route the fix to a build resolver (`ecc:react-build-resolver` / `ecc:build-error-resolver`),
-   then re-run the gates.
-   e. If all gates PASS → break. Else collect findings, `attempt += 1`, continue. After attempt 3 still
+   d. **Security gate** → run `ecc:security-reviewer` + `security-agent`, aggregate to PASS/FAIL.
+   e. **Test gate** → `Task(subagent_type: "test-agent")` runs the **full suite** — the new tests plus
+   every existing test; a regression in an older feature is a FAIL like any other. If it FAILs on a
+   TypeScript/compile/build error, route the fix to a build resolver (`ecc:react-build-resolver` /
+   `ecc:build-error-resolver`), then re-run the gates.
+   f. If all gates PASS → break. Else collect findings, `attempt += 1`, continue. After attempt 3 still
    failing → go to step 7 (blocked).
 5. **On success — commit, push, PR**:
    - Mark every sub-step of the group `- [x]` (Edit) and add ` ✅` to the group heading (repo convention).

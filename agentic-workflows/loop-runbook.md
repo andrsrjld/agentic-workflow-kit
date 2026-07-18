@@ -76,6 +76,23 @@ reviewed the result and selected the host scheduler/cadence.
 Choose one pattern at a time. If loops overlap, use the priority defined in
 `docs/LOOP.md`; only one write-capable loop may own an item.
 
+## The five loop architectures
+
+Patterns above are *work selections* (what to loop over). Architectures are
+*run shapes* (how one run is structured). Any pattern runs in one of these five
+shapes; each maps to an existing kit primitive — do not build new machinery:
+
+| Architecture | Shape | Kit primitive |
+| --- | --- | --- |
+| Stateless | do task → check with a cheaper model → stop; no memory | one-shot `/nerve` + gates, maker/checker split; `memory.enabled: false` for pure statelessness |
+| Learning | journal lessons, improve a skill/workflow over time | self-learning loop (retrieve → judge → distill → consolidate); the epic Automation Log is the durable `learning.md` |
+| Multi-agent review | orchestrator fans out factual / domain / safety / style reviewers | review gate via ECC reviewers (`code-reviewer`, `security-reviewer`, language reviewers) + split-role multi-perspective review |
+| Verification | implementer + scorer iterate to maximize a metric | GAN harness (`/gan-build`: generator ↔ evaluator, bounded iterations, scored) |
+| Workflow improvement | process optimizer refines the development workflow itself | `/evolve` + harness audit + CONSOLIDATE promote-to-`patterns`; run as an L1 report-only loop whose findings are AI-layer edits, human-reviewed |
+
+The workflow-improvement architecture never self-applies: it proposes edits to
+rules, skills, or gates as an L1 report; a human applies them.
+
 ## Codex and Claude adapters
 
 Claude uses the installed `/nerve` command plus this runbook. Codex translates

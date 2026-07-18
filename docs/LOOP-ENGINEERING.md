@@ -26,6 +26,11 @@ scheduler / manual trigger
 - A maker/checker split with a Codex verifier template.
 - Seven pattern names: daily triage, issue triage, CI sweeper, dependency
   sweeper, changelog drafter, post-merge cleanup, and PR babysitter.
+- Five loop architectures — stateless, learning, multi-agent review,
+  verification, workflow improvement — each mapped to an existing kit
+  primitive in the runbook's "The five loop architectures" table
+  (`~/.agentic-workflows/loop-runbook.md`). Patterns pick the work;
+  architectures shape the run.
 
 The design is informed by the MIT-licensed
 [loop-engineering](https://github.com/cobusgreyling/loop-engineering) project,

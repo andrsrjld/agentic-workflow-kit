@@ -85,3 +85,11 @@ Last updated: 2026-06-20 — by Claude (initial scaffold)
 - judge → `agentdb_feedback` / `hooks_intelligence_trajectory-end` · gate verdicts as labels
 - distill → `agentdb_context-synthesize` · `npx ruflo memory store`
 - consolidate → `agentdb_consolidate`/`hierarchical-store` · `npx @claude-flow/cli memory store --namespace patterns`
+
+## Five loop architectures → kit mapping (reference, from AI LABS video 8wsM0euQOvc)
+- stateless → one-shot `/nerve` + gates, maker/checker
+- learning → self-learning loop; Automation Log = durable `learning.md`
+- multi-agent review → review gate, ECC reviewers, split-role perspectives
+- verification → GAN harness `/gan-build` (generator ↔ evaluator, scored)
+- workflow improvement → `/evolve` + harness audit, L1 report-only, human applies
+- Full table: `agentic-workflows/loop-runbook.md` "The five loop architectures"
