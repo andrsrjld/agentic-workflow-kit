@@ -66,3 +66,13 @@ For a Codex project, copy `templates/codex/` to `.codex/`. The adapter translate
 the loop contract into normal Codex actions and supplies `loop-triage` for L1
 and `loop-verifier.toml` for an independent L2 checker. It never assumes that a
 Claude slash command exists.
+
+## Pi adapter
+
+For a Pi (pi.dev) project, copy `templates/pi/` to `.pi/` (or drop it under
+`~/.pi/agent/` to install globally — Pi auto-loads `AGENTS.md` from there).
+`AGENTS.md` carries the loop contract and
+`skills/{nerve,agentic-init,loop-triage}` give explicit `/skill:` entry
+points, since Pi's Agent Skills use the same `SKILL.md` format. Pi has no
+sub-agent primitive, so an L2 checker cannot run in-process — verify with a
+second, separate `pi` CLI session instead of a `loop-verifier` config.

@@ -74,8 +74,9 @@ Goal: real codebase → agentic scaffold layered on top, **no app-code edits**.
    `tenant.scope_fields: []` unless multi-tenant evidence is found).
 3. **Drop generic tooling** — copy gate `scripts/`, `.claude/hooks/` (guardrail +
    nerve), `.claude/agents/`, `.claude/commands/`, and the applicable
-   `templates/codex/` adapter into `.codex/`; merge `settings.json`
-   non-destructively. Do not overwrite anything the project already customized.
+   `templates/codex/` adapter into `.codex/` or `templates/pi/` adapter into
+   `.pi/`; merge `settings.json` non-destructively. Do not overwrite anything
+   the project already customized.
 4. **Reverse-engineer initial `/docs`** — seed PRD / epics / backlog **from the
    actual code** (modules, routes, domains found), in the standard format, marked
    as drafts for human review. These describe what exists; they don't change it.

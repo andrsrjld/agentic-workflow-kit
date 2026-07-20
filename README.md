@@ -57,7 +57,7 @@ zero to a fully agentic state.
 | `install/` | `install.sh` (deploy) + `verify.sh` (doctor) |
 | `rules/` | Global rules (auto-loaded by ECC): nervous-system, self-learning, graph-intelligence, memory-protocol, agent-routing, testing-taxonomy, docs-source-of-truth, loop-engineering |
 | `claude/` | `/nerve` + `/agentic-init` commands, hooks, settings snippet |
-| `templates/` | Per-project scaffolding: manifest, docs, loop controls, worktree/readiness scripts, and Claude/Codex adapters |
+| `templates/` | Per-project scaffolding: manifest, docs, loop controls, worktree/readiness scripts, and Claude/Codex/Pi adapters |
 | `agentic-workflows/` | Portable runbooks (model-agnostic): nerve, bootstrap, and loop control-plane algorithms |
 | `docs/` | Human manuals: install, adoption, architecture, loop engineering, docs format, testing, troubleshooting |
 | `examples/` | Minimal worked walkthrough |

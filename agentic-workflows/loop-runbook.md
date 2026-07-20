@@ -93,10 +93,13 @@ shapes; each maps to an existing kit primitive — do not build new machinery:
 The workflow-improvement architecture never self-applies: it proposes edits to
 rules, skills, or gates as an L1 report; a human applies them.
 
-## Codex and Claude adapters
+## Claude, Codex, and Pi adapters
 
 Claude uses the installed `/nerve` command plus this runbook. Codex translates
 the same procedure from `AGENTS.md` and may use the generated
 `.codex/skills/loop-triage` and `.codex/agents/loop-verifier.toml` templates.
-Neither adapter creates an automation, schedules a job, or expands a connector
-scope by itself.
+Pi has no sub-agent primitive — its `AGENTS.md` plus
+`.pi/skills/{nerve,agentic-init,loop-triage}` cover L1, and an L2 maker/checker
+split runs as two separate `pi` CLI sessions instead of an in-process verifier
+agent. No adapter creates an automation, schedules a job, or expands a
+connector scope by itself.

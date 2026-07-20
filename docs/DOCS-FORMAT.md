@@ -1,7 +1,7 @@
 # Docs Format — the standardized source of truth
 
 Every project the kit touches carries the **same** doc set, so any agent (Claude,
-Codex, or a human) knows where the truth lives. This is the human guide to that
+Codex, Pi, or a human) knows where the truth lives. This is the human guide to that
 format: each artifact's purpose, the canonicity order (who wins on conflict),
 cross-references, and where the skeletons live. It mirrors the
 `docs-source-of-truth` rule but with fuller explanation and examples.

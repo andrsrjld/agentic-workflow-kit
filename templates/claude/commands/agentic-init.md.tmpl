@@ -51,8 +51,8 @@ Detect package manager (lockfile / `packageManager` field), monorepo tool
 1. Detect stack / pm / monorepo / branches / layout.
 2. Write `.agentic/config.yml` with detected values; surface for user review. Leave
    `tenant.scope_fields: []` unless multi-tenant evidence is found.
-3. Drop generic `scripts/`, `.claude/{hooks,agents,commands}/`, and the applicable `.codex/` adapter;
-   merge `settings.json` non-destructively. Never overwrite project customizations.
+3. Drop generic `scripts/`, `.claude/{hooks,agents,commands}/`, and the applicable `.codex/` or `.pi/`
+   adapter; merge `settings.json` non-destructively. Never overwrite project customizations.
 4. Reverse-engineer initial `{{manifest.docs.root}}` **from the actual code** (modules/routes/domains),
    in the standard format, marked as drafts for human review.
 5. Add disabled loop controls; do not schedule or enable them.

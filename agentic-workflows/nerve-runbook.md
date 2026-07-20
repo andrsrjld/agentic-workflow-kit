@@ -1,9 +1,10 @@
 # Nerve Runbook — model-agnostic `/nerve` algorithm
 
 This runbook is the **canonical, harness-independent specification** of the
-`/nerve` brain. Any model or runner (Claude Code, Codex, a plain `npx` script)
-executes these steps. The Claude `/nerve` command and a Codex `AGENTS.md` entry
-are thin frontends over this prose; nothing here requires Claude-only tools.
+`/nerve` brain. Any model or runner (Claude Code, Codex, Pi, a plain `npx`
+script) executes these steps. The Claude `/nerve` command, a Codex `AGENTS.md`
+entry, and a Pi `/skill:nerve` are thin frontends over this prose; nothing here
+requires Claude-only tools.
 
 > **Graceful degradation is mandatory.** Every memory/graph/recommendation call
 > below is best-effort. If the tool, network, or `.agentic/config.yml` manifest

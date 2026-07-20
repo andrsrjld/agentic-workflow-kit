@@ -38,7 +38,7 @@ and project type (workspaces → monorepo, else single-app).
 
 ### new
 1. Scaffold from `~/.agentic-workflows/templates/`: `claude/` (commands, agents,
-   hooks, settings snippet), applicable `codex/` adapter, gate `scripts/`, `/docs` skeletons — substitute
+   hooks, settings snippet), applicable `codex/` or `pi/` adapter, gate `scripts/`, `/docs` skeletons — substitute
    `{{placeholders}}` from detection/answers.
 2. Write `.agentic/config.yml` from the template with detected values; leave
    unknowns blank (auto at runtime).
@@ -56,8 +56,8 @@ and project type (workspaces → monorepo, else single-app).
 2. Write `.agentic/config.yml` with detected values; surface for user review.
    Leave `tenant.scope_fields: []` unless multi-tenant evidence is found.
 3. Drop generic `scripts/`, `.claude/{hooks,agents,commands}/`, and the applicable
-   `.codex/` adapter; merge `settings.json` non-destructively. Never overwrite
-   project customizations.
+   `.codex/` or `.pi/` adapter; merge `settings.json` non-destructively. Never
+   overwrite project customizations.
 4. Reverse-engineer initial `/docs` **from the actual code** (modules/routes/domains),
    in the standard format, marked as drafts for human review.
 5. Add disabled loop controls; do not schedule or enable them.

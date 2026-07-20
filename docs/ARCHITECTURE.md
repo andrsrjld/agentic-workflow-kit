@@ -212,7 +212,9 @@ Nothing above is Claude-only:
   `bootstrap-new-project.md`.
 - Every learning phase has both an **MCP path** (Claude) and a **portable CLI
   path** (`npx ruflo …`, `npx @claude-flow/cli …`).
-- Codex uses an `AGENTS.md` entry as its frontend over the same runbooks.
+- Codex and Pi each use an `AGENTS.md` entry as their frontend over the same
+  runbooks; Pi additionally exposes `/skill:nerve` and `/skill:agentic-init`
+  via its native Agent Skills format.
 - Optional loops are a separate, bounded control plane over `/nerve`: their
   policy/state/budget preflight runs before task execution, and L2 adds an
   isolated maker/checker worktree flow. See [LOOP-ENGINEERING.md](LOOP-ENGINEERING.md).

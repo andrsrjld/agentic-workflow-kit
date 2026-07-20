@@ -11,7 +11,7 @@ produces, the additive-safety guarantee for existing repos, and troubleshooting.
 
 > **What `/agentic-init` is.** A thin frontend over the model-agnostic runbook at
 > `~/.agentic-workflows/bootstrap-new-project.md`. Claude runs the slash-command;
-> Codex / an `npx` runner follow the same runbook steps. The core scaffold needs
+> Codex, Pi, or an `npx` runner follow the same runbook steps. The core scaffold needs
 > only **bash + git** — every memory/graph/MCP step is best-effort and skipped if
 > the tool is absent.
 
